@@ -2,6 +2,8 @@
 
 An eBay-like e-commerce auction site that will allow users to post auction listings, place bids on listings, comment on those listings, and add listings to a "watchlist".
 
+You can [click here](https://youtu.be/4Ko1P9H3B3k/) for watching the demo.
+
 This is [Commerce](https://cs50.harvard.edu/web/2020/projects/2/commerce/), which is one of [CS50W projects](https://cs50.harvard.edu/web/2020/projects/).
 Check up the rest of them! - [Projects for CS50W](https://github.com/stars/mr-wolf-rsh/lists/cs50w/)
 
