@@ -1,0 +1,40 @@
+html,
+body {
+    margin: 0;
+    height: 100%;
+    font-family: 'Josefin Sans', sans-serif;
+    background-color: white;
+}
+
+img {
+    width: 100%;
+}
+
+nav {
+    font-size: 24px;
+}
+
+.navbar-nav>li {
+    text-align: center;
+}
+
+.navbar-brand {
+    margin-right: 0;
+}
+
+.md-48 {
+    font-size: 48px;
+}
+
+.md-light {
+    color: #fff;
+}
+
+.body-container {
+    margin: 20px;
+}
+
+.card>.card-header,
+.card>.card-footer {
+    background-color: unset;
+}

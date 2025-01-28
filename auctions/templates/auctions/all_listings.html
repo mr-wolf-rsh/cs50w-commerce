@@ -1,0 +1,36 @@
+{% extends "auctions/listing_template.html" %}
+
+{% block title_listings %}
+    <h1 class="text-center">
+        {% if category_name %}
+            {{ category_name }}
+        {% else %}
+            All
+        {% endif %}
+         Listings
+    </h1>
+{% endblock %}
+
+{% block categories %}
+    <div class="mb-4 pr-4 text-right">
+        <div class="btn-group" role="group">
+            <a type="button" class="btn btn-info btn-lg" href="{% url 'auctions:all_listings' %}">Categories</a>
+            <button type="button" class="btn btn-info btn-lg dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            </button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item text-center" href="{% url 'auctions:all_listings' %}?cat=None">
+                    ----- None -----
+                </a>
+                {% for category in categories %}
+                    <a class="dropdown-item" href="{% url 'auctions:all_listings' %}?cat={{category.id}}">
+                        {{ category.category_name }}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block title_empty_listings %}
+    <h3 class="text-center">No listings available from this category.</h3>
+{% endblock %}

@@ -1,0 +1,9 @@
+.card {
+    width: fit-content;
+    padding: 30px;
+    border-radius: 50px;
+}
+
+.card>.card-footer {
+    background-color: unset;
+}

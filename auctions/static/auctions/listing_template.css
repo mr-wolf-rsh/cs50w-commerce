@@ -1,0 +1,57 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-gap: 1rem;
+}
+
+.grid-container>div {
+    align-self: center;
+    justify-self: center;
+}
+
+.card {
+    border-radius: 22px;
+    min-width: 300px;
+    max-width: 400px;
+}
+
+.listing-state {
+    height: 16px;
+    font-size: 14px;
+    text-align: center;
+    border-radius: 20px 20px 0 0 !important;
+    font-weight: bold;
+}
+
+.card.shadow:hover {
+    box-shadow: 0 .5rem 1rem rgba(0, 55, 115, 0.5) !important;
+}
+
+.card-header {
+    font-weight: bold;
+}
+
+.listing-title {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.text-hidden {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    overflow-wrap: anywhere;
+}
+
+.button-icon:focus {
+    outline: 0 !important;
+    outline-offset: 0 !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+}
+
+.button-icon {
+    padding-bottom: 0;
+}

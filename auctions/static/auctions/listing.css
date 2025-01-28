@@ -1,0 +1,30 @@
+.listing-title {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.card {
+    padding: 10px;
+    border-radius: 20px;
+}
+
+textarea[name=content] {
+    border-radius: 0.25rem 0.25rem 0 0;
+}
+
+button[name=btn_post_comment] {
+    border-radius: 0 0 0.25rem 0.25rem;
+}
+
+.button-icon:focus {
+    outline: 0 !important;
+    outline-offset: 0 !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+}
+
+.button-icon {
+    color: inherit !important;
+    padding-bottom: 0
+}

@@ -1,0 +1,280 @@
+{% extends "auctions/layout.html" %}
+
+{% load humanize %}
+
+{% load static %}
+
+{% block custom_styles %}
+    <link href="{% static 'auctions/listing.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block title %}
+    Auctions - Listing
+{% endblock %}
+
+{% block body %}
+    {% if listing %}
+        {% if user.is_authenticated and user == listing.highest_bid.user and listing.state == 'C' %}
+            <div class="row mt-4 mx-4">
+                <div class="col">
+                    <div class="alert alert-success text-center" style="font-size: x-large">
+                        Congratulations! You won this auction,
+                        {{ user.username }}!
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        <div class="row mt-4 mx-4">
+            <div class="col">
+                <div class="card mx-auto">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col">
+                                <div class="listing-title">
+                                    {{ listing.title }}
+                                </div>
+                            </div>
+                            {% if user.is_authenticated and user != listing.user %}
+                                <div class="px-2 text-center">
+                                    <form action="{% url 'auctions:listing_page' listing.id %}" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="listing_id" value="{{listing.id}}">
+                                        {% if user not in listing.user_watchlist.all %}
+                                            <button class="btn btn-link button-icon text-dark" name="btn_add_watchlist" type="submit"
+                                                data-toggle="tooltip" data-placement="top" title="Add to Watchlist!">
+                                                <i class="material-icons-round" style="width: 24px">remove_red_eyes</i>
+                                            </button>
+                                        {% else %}
+                                            <button class="btn btn-link button-icon text-dark" name="btn_remove_watchlist" type="submit"
+                                                data-toggle="tooltip" data-placement="top" title="Remove from Watchlist!">
+                                                <i class="material-icons-round">cancel</i>
+                                            </button>
+                                        {% endif %}
+                                    </form>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="listing-container">
+                            <div class="row">
+                                {% if listing.image_url %}
+                                    <div class="col">
+                                        <img src="{{listing.image_url}}">
+                                    </div>
+                                {% endif %}
+                                <div class="col-6 mx-auto">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="text-justify">
+                                                {{ listing.description }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col">
+                                            Category:
+                                        </div>
+                                        <div class="col">
+                                            <h5>
+                                                {% if listing.category %}
+                                                    <span class="badge badge-pill"
+                                                        style="color: {{ listing.category.color_text }};
+                                                        background-color: {{ listing.category.color }}">
+                                                        {{ listing.category.category_name }}
+                                                    </span>
+                                                {% else %}
+                                                    <span class="badge badge-pill badge-light">None</span>
+                                                {% endif %}
+                                            </h5>
+                                        </div>
+                                        <div class="col">
+                                            State:
+                                        </div>
+                                        <div class="col">
+                                            <h5>
+                                                {% if listing.state == 'A' %}
+                                                    <span class="badge badge-pill badge-success">Active</span>
+                                                {% else %}
+                                                    <span class="badge badge-pill badge-warning">Closed</span>
+                                                {% endif %}
+                                            </h5>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="row">
+                                                <div class="col-5">
+                                                    {% if listing.highest_bid and listing.state == 'C' %}
+                                                        Final Price:
+                                                    {% else %}
+                                                        Current Price:
+                                                    {% endif %}
+                                                </div>
+                                                <div class="col">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <div class="row">
+                                                                <div class="col">
+                                                                    <span class="text-success font-weight-bold">
+                                                                        {% if listing.highest_bid %}
+                                                                            <strong>
+                                                                                ${{ listing.highest_bid.price }}
+                                                                            </strong>
+                                                                            from
+                                                                            <strong>
+                                                                                {{ listing.highest_bid.user.username }}
+                                                                            </strong>
+                                                                        {% else %}
+                                                                            ${{ listing.starting_price }}
+                                                                        {% endif %}
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col">
+                                                                    {% if listing.highest_bid %}
+                                                                        <span class="text-muted font-weight-normal">
+                                                                            ({{ listing.highest_bid.created_at | naturaltime }})
+                                                                        </span>
+                                                                    {% endif %}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-5">
+                                                    Starting Price:
+                                                </div>
+                                                <div class="col">
+                                                    ${{ listing.starting_price }}
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-5">
+                                                    Total Bids:
+                                                </div>
+                                                <div class="col">
+                                                    <span class="text-success font-weight-bold">
+                                                        {{ listing.total_bids }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% if user.is_authenticated and listing.state == 'A' %}
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col">
+                                                <form action="{% url 'auctions:listing_page' listing.id %}" method="post">
+                                                    {% csrf_token %}
+                                                    {% if user == listing.user %}
+                                                        <button class="btn btn-danger btn-block" name="btn_close_auction"
+                                                            type="submit">
+                                                            Close Auction
+                                                        </button>
+                                                    {% else %}
+                                                        {% if input_message %}
+                                                            <div class="alert alert-warning">
+                                                                {{ input_message }}
+                                                            </div>
+                                                        {% endif %}
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text bg-success text-light">$</span>
+                                                                </div>
+                                                                {{ input_form }}
+                                                                <div class="input-group-append">
+                                                                    <button class="btn btn-success" name="btn_place_bid"
+                                                                        type="submit">Bid In!</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    {% endif %}
+                                                </form>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-right text-muted">
+                        <div class="row">
+                            <div class="col">
+                                created {{ listing.created_at | naturaltime }} by
+                                {% if listing.user == user %}
+                                    yourself
+                                {% else %}
+                                    <strong class="text-dark">
+                                        {{ listing.user.username }}
+                                    </strong>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card mx-auto">
+                    <div class="card-body">
+                        <h3>Post a comment!</h3>
+                        {% if user.is_authenticated %}
+                            <form action="{% url 'auctions:listing_page' listing.id %}" method="POST">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    {{ textarea_form }}
+                                    <button class="btn btn-primary btn-block" name="btn_post_comment"
+                                        type="submit" style="font-size: 20px;">
+                                        Submit
+                                    </button>
+                                </div>
+                            </form>
+                        {% else %}
+                            <div>
+                                Please
+                                <a href="{% url 'auctions:login' %}">
+                                    Login
+                                </a>
+                                to post a comment.
+                            </div>
+                        {% endif %}
+                        {% for comment in comments %}
+                            <hr>
+                            <div class="comment-container">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <div class="row">
+                                            <div class="col-1">
+                                                <i class="material-icons-round" style="font-size: 20px">account_box</i>
+                                            </div>
+                                            <div class="col text-primary">
+                                                {{ comment.user.username }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col text-muted">
+                                        {{ comment.created_at | date }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        {{ comment.content }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <h3 class="text-center">This listing is not available.</h3>
+    {% endif %}
+{% endblock %}
